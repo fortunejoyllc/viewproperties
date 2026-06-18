@@ -12,7 +12,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+.section-title{
+    font-family:'Playfair Display',serif;
+    font-size:2.2rem;
+    margin:40px 0 20px;
+    color:#222;
+}
+.property-tag.available{
+    background:#eaffea;
+    color:#1a7f37;
+}
 
+.property-tag.unavailable{
+    background:#ffe5e8;
+    color:var(--red);
+}
 :root{
     --red:#ff2c2c;
     --dark:#141414;
@@ -29,6 +43,9 @@ body{
     font-family:'Inter',sans-serif;
     background:white;
     color:#222;
+}
+.section{
+    margin-bottom:60px;
 }
 
 /* ===== NAVBAR ===== */
@@ -223,9 +240,17 @@ footer img{
 </section>
 
 <section class="properties">
-    <div class="grid" id="propertyGrid">
+
+    <div class="section">
+        <h2 class="section-title">Available Properties</h2>
+        <div class="grid" id="availableGrid"></div>
     </div>
-    
+
+    <div class="section">
+        <h2 class="section-title">Unavailable Properties</h2>
+        <div class="grid" id="unavailableGrid"></div>
+    </div>
+
 </section>
 
 <footer>
@@ -247,7 +272,6 @@ footer img{
 </footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-
 import {
   getFirestore,
   collection,
@@ -267,27 +291,43 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadProperties() {
-  const grid = document.getElementById("propertyGrid");
+function createCard(property) {
+  const isAvailable = property.status.toLowerCase().includes("available");
 
+  return `
+    <div class="card">
+      <img src="${property.image}" alt="${property.title}">
+
+      <div class="card-content">
+
+        <div class="property-tag ${isAvailable ? "available" : "unavailable"}">
+          ${property.status}
+        </div>
+
+        <h2>${property.title}</h2>
+
+        <p>${property.description}</p>
+
+      </div>
+    </div>
+  `;
+}
+
+async function loadProperties() {
   const snapshot = await getDocs(collection(db, "properties"));
+
+  const availableGrid = document.getElementById("availableGrid");
+  const unavailableGrid = document.getElementById("unavailableGrid");
 
   snapshot.forEach((doc) => {
     const property = doc.data();
+    const isAvailable = property.status.toLowerCase().includes("available");
 
-    grid.innerHTML += `
-      <div class="card">
-        <img src="${property.image}" alt="${property.title}">
-
-        <div class="card-content">
-          <div class="property-tag">${property.status}</div>
-
-          <h2>${property.title}</h2>
-
-          <p>${property.description}</p>
-        </div>
-      </div>
-    `;
+    if (isAvailable) {
+      availableGrid.innerHTML += createCard(property);
+    } else {
+      unavailableGrid.innerHTML += createCard(property);
+    }
   });
 }
 
