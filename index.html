@@ -337,6 +337,42 @@ async function loadProperties() {
 
 loadProperties();
 </script>
-    
+
+<script>
+let logoClicks = 0;
+let clickTimer;
+
+document.querySelector(".logo").addEventListener("click", function() {
+    logoClicks++;
+
+    clearTimeout(clickTimer);
+
+    clickTimer = setTimeout(() => {
+        logoClicks = 0;
+    }, 5000);
+
+    if (logoClicks >= 14) {
+        window.location.href = "https://brenninisthegoat.github.io/3sUp/";
+    }
+});
+</script>
+<script>
+let logoClicks = 0;
+let clickTimer;
+
+document.querySelector(".logo").addEventListener("click", function() {
+    logoClicks++;
+
+    clearTimeout(clickTimer);
+
+    clickTimer = setTimeout(() => {
+        logoClicks = 0;
+    }, 5000);
+
+    if (logoClicks >= 14) {
+        window.location.href = "https://brenninisthegoat.github.io/3sUp/";
+    }
+});
+</script>
 </body>
 </html>
