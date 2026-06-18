@@ -292,7 +292,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function createCard(property) {
-  const isAvailable = property.status.toLowerCase().includes("available");
+  const status = property.status.trim();
+    const isAvailable = status === "Available";
+    const isUnavailable = status === "Unavailable";
 
   return `
     <div class="card">
@@ -320,15 +322,16 @@ async function loadProperties() {
   const unavailableGrid = document.getElementById("unavailableGrid");
 
   snapshot.forEach((doc) => {
-    const property = doc.data();
-    const isAvailable = property.status.toLowerCase().includes("available");
-
-    if (isAvailable) {
-      availableGrid.innerHTML += createCard(property);
-    } else {
-      unavailableGrid.innerHTML += createCard(property);
-    }
-  });
+      const property = doc.data();
+      const status = property.status.trim();
+    
+      if (status === "Available") {
+        availableGrid.innerHTML += createCard(property);
+      } 
+      else if (status === "Unavailable") {
+        unavailableGrid.innerHTML += createCard(property);
+      }
+    });
 }
 
 loadProperties();
