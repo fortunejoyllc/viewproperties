@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 .section-title{
     font-family:'Playfair Display',serif;
     font-size:2.2rem;
@@ -19,6 +20,7 @@
     color:var(--red);
     text-align:center;
 }
+
 .property-tag.available{
     background:#ffe5e8;
     color:var(--red);
@@ -28,6 +30,7 @@
     background:var(--red);
     color:#ffe5e8;
 }
+
 :root{
     --red:#ff2c2c;
     --dark:#141414;
@@ -45,6 +48,7 @@ body{
     background:white;
     color:var(--red);
 }
+
 .section{
     margin-bottom:60px;
 }
@@ -73,6 +77,7 @@ header{
     display:flex;
     align-items:center;
     gap:15px;
+    cursor:pointer;
 }
 
 .logo img{
@@ -99,7 +104,10 @@ header{
 .hero{
     padding:100px 20px;
     text-align:center;
-    background:linear-gradient(rgba(255,44,44,.5), rgba(255,44,44,.5));
+    background:linear-gradient(
+        rgba(255,44,44,.5),
+        rgba(255,44,44,.5)
+    );
     color:white;
 }
 
@@ -123,7 +131,10 @@ header{
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
+    grid-template-columns:repeat(
+        auto-fit,
+        minmax(380px,1fr)
+    );
     gap:40px;
 }
 
@@ -143,7 +154,10 @@ header{
     width:100%;
     height:280px;
     object-fit:cover;
-    filter:contrast(108%) saturate(108%) brightness(104%);
+    filter:
+        contrast(108%)
+        saturate(108%)
+        brightness(104%);
 }
 
 .card-content{
@@ -153,6 +167,7 @@ header{
 .card-content h2{
     font-family:'Playfair Display',serif;
     margin-bottom:15px;
+    color:var(--dark);
 }
 
 .property-tag{
@@ -200,6 +215,7 @@ footer img{
 }
 
 @media(max-width:768px){
+
     .hero h1{
         font-size:2.8rem;
     }
@@ -211,6 +227,11 @@ footer img{
     .phone{
         display:none;
     }
+
+    .navbar{
+        padding:15px 20px;
+    }
+
 }
 
 </style>
@@ -218,46 +239,107 @@ footer img{
 
 <body>
 
+<!-- ================= NAVBAR ================= -->
+
 <header>
+
     <div class="navbar">
+
         <div class="logo">
-            <img src="logo.png" alt="Fortune Joy">
+
+            <img
+                src="logo.png"
+                alt="Fortune Joy"
+            >
 
             <div>
+
                 <h2>Fortune Joy LLC</h2>
-                <small>Property Listings</small>
+
+                <small>
+                    Property Listings
+                </small>
+
             </div>
+
         </div>
 
         <div class="phone">
             850-270-8205
         </div>
+
     </div>
+
 </header>
 
+
+<!-- ================= HERO ================= -->
+
 <section class="hero">
-    <h1>Our Properties</h1>
-    <p>Explore properties currently offered by Fortune Joy LLC.</p>
+
+    <h1>
+        Our Properties
+    </h1>
+
+    <p>
+        Explore properties currently offered by Fortune Joy LLC.
+    </p>
+
 </section>
+
+
+<!-- ================= PROPERTIES ================= -->
 
 <section class="properties">
 
-    <div class="section">
-        <h2 class="section-title">Available Properties</h2>
-        <div class="grid" id="availableGrid"></div>
-    </div>
+
+    <!-- AVAILABLE -->
 
     <div class="section">
-        <h2 class="section-title">Unavailable Properties</h2>
-        <div class="grid" id="unavailableGrid"></div>
+
+        <h2 class="section-title">
+            Available Properties
+        </h2>
+
+        <div
+            class="grid"
+            id="availableGrid"
+        ></div>
+
     </div>
+
+
+    <!-- UNAVAILABLE -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            Unavailable Properties
+        </h2>
+
+        <div
+            class="grid"
+            id="unavailableGrid"
+        ></div>
+
+    </div>
+
 
 </section>
 
-<footer>
-    <img src="logo.png" alt="Fortune Joy">
 
-    <h3>Fortune Joy LLC</h3>
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <img
+        src="logo.png"
+        alt="Fortune Joy"
+    >
+
+    <h3>
+        Fortune Joy LLC
+    </h3>
 
     <p>
         2800 S Adams St, Suite #7450<br>
@@ -270,109 +352,237 @@ footer img{
         Property Manager: Rajesh Kumar<br>
         850-270-8205
     </p>
+
 </footer>
+
+
+<!-- ================= FIREBASE ================= -->
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
 import {
-  getFirestore,
-  collection,
-  getDocs
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+
+/* ===== FIREBASE CONFIG ===== */
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDfMEwp4pRIGtGzHOJ9n0e1bzAvBsX9jAQ",
-  authDomain: "properties-8645d.firebaseapp.com",
-  projectId: "properties-8645d",
-  storageBucket: "properties-8645d.firebasestorage.app",
-  messagingSenderId: "99650468987",
-  appId: "1:99650468987:web:b7261a757aea088793b6de",
-  measurementId: "G-L9VJ5MGH1G"
+
+    apiKey: "AIzaSyDfMEwp4pRIGTgzHOJ9n0e1bzAvBsX9jAQ",
+
+    authDomain:
+        "properties-8645d.firebaseapp.com",
+
+    projectId:
+        "properties-8645d",
+
+    storageBucket:
+        "properties-8645d.firebasestorage.app",
+
+    messagingSenderId:
+        "99650468987",
+
+    appId:
+        "1:99650468987:web:b7261a757aea088793b6de",
+
+    measurementId:
+        "G-L9VJ5MGH1G"
+
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+
+/* ===== INITIALIZE FIREBASE ===== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+/* ===== CREATE PROPERTY CARD ===== */
 
 function createCard(property) {
-  const status = property.status.trim();
-    const isAvailable = status === "Available";
-    const isUnavailable = status === "Unavailable";
 
-  return `
-    <div class="card">
-      <img src="${property.image}" alt="${property.title}">
+    const status =
+        (property.status || "").trim();
 
-      <div class="card-content">
+    const isAvailable =
+        status === "Available";
 
-        <div class="property-tag ${isAvailable ? "available" : "unavailable"}">
-          ${property.status}
+    const isUnavailable =
+        status === "Unavailable";
+
+
+    return `
+
+        <div class="card">
+
+            <img
+                src="${property.image || ""}"
+                alt="${property.title || "Property"}"
+            >
+
+            <div class="card-content">
+
+                <div
+                    class="property-tag ${
+                        isAvailable
+                            ? "available"
+                            : "unavailable"
+                    }"
+                >
+
+                    ${status}
+
+                </div>
+
+
+                <h2>
+                    ${property.title || "Untitled Property"}
+                </h2>
+
+
+                <p>
+                    ${property.description || ""}
+                </p>
+
+            </div>
+
         </div>
 
-        <h2>${property.title}</h2>
+    `;
 
-        <p>${property.description}</p>
-
-      </div>
-    </div>
-  `;
 }
+
+
+/* ===== LOAD PROPERTIES ===== */
 
 async function loadProperties() {
-  const snapshot = await getDocs(collection(db, "properties"));
 
-  const availableGrid = document.getElementById("availableGrid");
-  const unavailableGrid = document.getElementById("unavailableGrid");
+    try {
 
-  snapshot.forEach((doc) => {
-      const property = doc.data();
-      const status = property.status.trim();
-    
-      if (status === "Available") {
-        availableGrid.innerHTML += createCard(property);
-      } 
-      else if (status === "Unavailable") {
-        unavailableGrid.innerHTML += createCard(property);
-      }
-    });
+        const snapshot =
+            await getDocs(
+                collection(db, "properties")
+            );
+
+
+        const availableGrid =
+            document.getElementById(
+                "availableGrid"
+            );
+
+        const unavailableGrid =
+            document.getElementById(
+                "unavailableGrid"
+            );
+
+
+        snapshot.forEach((doc) => {
+
+            const property =
+                doc.data();
+
+
+            const status =
+                (property.status || "").trim();
+
+
+            console.log(
+                "Property:",
+                doc.id,
+                property
+            );
+
+
+            if (status === "Available") {
+
+                availableGrid.innerHTML +=
+                    createCard(property);
+
+            }
+
+            else if (status === "Unavailable") {
+
+                unavailableGrid.innerHTML +=
+                    createCard(property);
+
+            }
+
+        });
+
+
+        console.log(
+            `Loaded ${snapshot.size} properties.`
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error loading properties:",
+            error
+        );
+
+    }
+
 }
 
+
+/* ===== START LOADING ===== */
+
 loadProperties();
+
 </script>
+
+
+<!-- ================= LOGO DOUBLE-CLICK ================= -->
 
 <script>
+
 let logoClicks = 0;
+
 let clickTimer;
 
-document.querySelector(".logo").addEventListener("click", function() {
-    logoClicks++;
 
-    clearTimeout(clickTimer);
+document
+    .querySelector(".logo")
+    .addEventListener("click", function() {
 
-    clickTimer = setTimeout(() => {
-        logoClicks = 0;
-    }, 5000);
+        logoClicks++;
 
-    if (logoClicks = 2) {
-        window.location.href = "https://fortunejoyllc.github.io/home/";
-    }
-});
+
+        clearTimeout(clickTimer);
+
+
+        clickTimer = setTimeout(() => {
+
+            logoClicks = 0;
+
+        }, 5000);
+
+
+        if (logoClicks === 2) {
+
+            window.location.href =
+                "https://fortunejoyllc.github.io/home/";
+
+        }
+
+    });
+
 </script>
-<script>
-let logoClicks = 0;
-let clickTimer;
 
-document.querySelector(".logo").addEventListener("click", function() {
-    logoClicks++;
 
-    clearTimeout(clickTimer);
-
-    clickTimer = setTimeout(() => {
-        logoClicks = 0;
-    }, 5000);
-
-    if (logoClicks >= 1) {
-        window.location.href = "https://fortunejoyllc.github.io/home/";
-    }
-});
-</script>
 </body>
 </html>
